@@ -93,7 +93,7 @@ def get_plot():
         # Training of model for 60 epochs
         model.fit(X, y, 
             validation_data=(X, y),
-            epochs=60, verbose=2, batch_size = 12,callbacks=[checkpoint])
+            epochs=50, verbose=2, batch_size = 12,callbacks=[checkpoint])
         # Loading the best model from 60 epochs
         from keras.models import load_model
         model=load_model('best_model.hdf5')
