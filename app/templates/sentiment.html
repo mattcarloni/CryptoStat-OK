@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Analyse and Predict</title>
+    <script
+      src="https://code.jquery.com/jquery-3.6.0.js"
+      integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/js/standalone/selectize.min.js"
+      integrity="sha256-+C0A5Ilqmu4QcSPxrlGpaZxJ04VjsRjKu+G82kl5UJk="
+      crossorigin="anonymous"
+    ></script>
+    <script 
+      src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.3/js/bootstrap.bundle.min.js" 
+      integrity="sha512-i9cEfJwUwViEPFKdC1enz4ZRGBj8YQo6QByFTF92YXHi7waCqyexvRD75S5NVTsSiTv7rKWqG9Y5eFxmRsOn0A==" 
+      crossorigin="anonymous" 
+      referrerpolicy="no-referrer">
+  </script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/css/selectize.bootstrap3.min.css"
+      integrity="sha256-ze/OEYGcFbPRmvCnrSeKbRTtjG4vGLHXgOqsyLFTRjg="
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
+      integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A=="
+      crossorigin="anonymous"
+    />
+    <link
+      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/header.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/manager.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/twitter.css') }}"
+    />
+  </head>
+  <body>
+    <header class="sidebar">
+      <div class="logo-details">
+        <div class="logo_name" id="username"></div>
+        <script>
+          $("#username").html(localStorage.getItem("name"));
+        </script>
+        <i class="bx bx-menu" id="btn"></i>
+      </div>
+      <ul class="nav-list">
+        <li>
+          <a href="{{ url_for('main.index') }}"
+            ><i class="bx bx-wallet"></i
+            ><span class="links_name">Wallet</span></a
+          >
+          <span class="tooltip">Wallet</span>
+        </li>
+        <li>
+          <a href="{{ url_for('main.tracker') }}"
+            ><i class="bx bx-bar-chart"></i
+            ><span class="links_name">Tracking</span></a
+          >
+          <span class="tooltip">Tracking</span>
+        </li>
+        <li>
+          <a href="{{ url_for('main.manager') }}"
+            ><i class="bx bx-cog"></i
+            ><span class="links_name">Crypto Manager</span></a
+          >
+          <span class="tooltip">Crypto Manager</span>
+        </li>
+        <li>
+          <a href="{{ url_for('crypto.analyse') }}"
+            ><i class="bx bx-line-chart"></i
+            ><span class="links_name">Analyse and Predict</span></a
+          >
+          <span class="tooltip">Analyse and Predict</span>
+        </li>
+        <li>
+          <a href="{{ url_for('twitter.sentiment') }}"
+            ><i class="bx bxl-twitter"></i
+            ><span class="links_name">Sentiment Analysis</span></a
+          >
+          <span class="tooltip">Twitter Sentiment Analysis</span>
+        </li>
+      </ul>
+      <ul>
+        <li id="logOut">
+          <a href="{{ url_for('auth.logout') }}"
+            ><i class="bx bx-log-out" id="log_out"></i
+            ><span class="links_name">Log Out</span></a
+          >
+          <span class="tooltip">Log Out</span>
+        </li>
+      </ul>
+      <script>
+        let sidebar = document.querySelector(".sidebar");
+        let closeBtn = document.querySelector("#btn");
+        closeBtn.addEventListener("click", () => {
+          sidebar.classList.toggle("open");
+          menuBtnChange();
+        });
+
+        function menuBtnChange() {
+          if (sidebar.classList.contains("open")) {
+            closeBtn.classList.replace("bx-menu", "bx-menu-alt-right");
+          } else {
+            closeBtn.classList.replace("bx-menu-alt-right", "bx-menu");
+          }
+        }
+      </script>
+    </header>
+    <main>
+      <script type="text/javascript">
+        function loading() {
+          $("#loading").show();
+          $("#content").hide();
+        }
+      </script>
+      <div id="loading">Hold on, it may take a while!</div>
+      <div id="content">
+        <h2>Twitter Sentiment Analysis</h2>
+        <div id="container">
+          <div id="form">
+            <div class="form">
+              <form id="myForm" action="/get_sentiment" method="POST">
+                <h3>Insert the Crypto to be analyzed:</h3>
+                <select name="cryptotwt" id="cryptotwt"></select>
+                <input type="submit" id="btSubmitTwt" value="Proceed" onclick="loading();"/>
+              </form>
+            </div>
+          </div>
+
+          <script>
+            let cryptoList = [];
+            let url =
+              "https://api.coingecko.com/api/v3/coins/markets?vs_currency=Eur&order=market_cap_desc&per_page=100&page=1&sparkline=false&price_change_percentage=1m";
+            $.ajax({
+              url,
+              method: "GET",
+              dataType: "json",
+              success: function (data) {
+                let options = [];
+                data.forEach((item) => {
+                  cryptoList.push(item);
+                  let option = document.createElement("option");
+                  option.setAttribute("value", JSON.stringify(item.name));
+                  option.innerText = item.name;
+                  options.push(option);
+                });
+                document.getElementById("cryptotwt").replaceChildren(...options);
+                $("select").selectize({
+                  sortField: "text",
+                });
+              },
+            });  
+          </script>
+
+          <script>
+            let count_display = 0;
+            function display_tooltip() {
+              if (count_display % 2 == 0) {
+                let tooltip_box = document.querySelector("#tooltip-box");
+                let tooltiptext = document.querySelector("#tooltiptext");
+                tooltip_box.style.display = "flex";
+                tooltiptext.style.display = "block";
+                 count_display++;
+              } else {
+                let tooltip_box = document.querySelector("#tooltip-box");
+                let tooltiptext = document.querySelector("#tooltiptext");
+                tooltip_box.style.display = "none";
+                tooltiptext.style.display = "none";
+                count_display++;
+              }
+            }
+          </script>
+
+          {% if plot_url2 %}
+          <div id="plot2">
+            <img src="{{(plot_url2)}}" alt="Chart cannot be displayed" />
+          </div>
+          <i id="info" class="bx bx-info-circle bx-sm" onclick="display_tooltip()"></i>
+          <div id="tooltip-box" style="display: none">
+            <div id="tooltiptext" class="tooltiptext" style="display: none">
+              <p>
+                The first graph represent the Polarity of each tweet, in simple words we can say that
+                Polarity represents the degree of emotion expressed in the text. <br> 
+                In the graph is represented as a decimal number that ranges from -1 to 1, 
+                so text with negative sentiments have polarity less than zero, neutral sentiments 
+                have polarity equal to zero, and positive sentiments have a polarity greater than 0.<br><br>
+                Subjectivity on the other side is the difference beetween Facts and Opinion, so the tweets
+                that are more objective because are expressing FACTS have value close to 0 while tweets 
+                that are less objective, so mostly made by personal OPINION, have value close to 1.<br><br>
+                In the graph below this is made more user-friendly and we can see how the tweets have been 
+                categorized as Neutral, Positive or Negative.<br>
+                The amount of tweets collected for this Analysis is 100 because we want to focus on the overall
+                sentiment for the specific Crypto in this exact moment in time.
+              </p>
+            </div>
+          </div>
+          {% endif %} {% if plot_url3 %}
+          <div id="plot3">
+            <img src="{{(plot_url3)}}" alt="Chart cannot be displayed" />
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </main>
+  </body>
+</html>

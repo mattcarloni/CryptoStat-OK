@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Manager</title>
+    <script 
+      src="https://code.jquery.com/jquery-3.6.0.js"
+      integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" 
+      crossorigin="anonymous">
+    </script>
+    <script 
+      src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.3/js/bootstrap.bundle.min.js" 
+      integrity="sha512-i9cEfJwUwViEPFKdC1enz4ZRGBj8YQo6QByFTF92YXHi7waCqyexvRD75S5NVTsSiTv7rKWqG9Y5eFxmRsOn0A==" 
+      crossorigin="anonymous" 
+      referrerpolicy="no-referrer">
+  </script>
+    <script 
+      src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/js/standalone/selectize.min.js" 
+      integrity="sha256-+C0A5Ilqmu4QcSPxrlGpaZxJ04VjsRjKu+G82kl5UJk=" 
+      crossorigin="anonymous">
+    </script>
+    <link 
+      rel="stylesheet" 
+      href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/css/selectize.bootstrap3.min.css" 
+      integrity="sha256-ze/OEYGcFbPRmvCnrSeKbRTtjG4vGLHXgOqsyLFTRjg=" 
+      crossorigin="anonymous"/>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
+      integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/header.css') }}"/>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/manager.css') }}"/>
+  </head>
+  <body>
+    <header class="sidebar">
+      <div class="logo-details">
+        <div class="logo_name" id="username"></div>
+        <script>
+          $("#username").html(localStorage.getItem("name"));
+        </script>
+        <i class="bx bx-menu" id="btn"></i>
+      </div>
+      <ul class="nav-list">
+        <li>
+          <a href="{{ url_for('main.index') }}"><i class="bx bx-wallet"></i><span class="links_name">Wallet</span></a>
+          <span class="tooltip">Wallet</span>
+        </li>
+        <li>
+          <a href="{{ url_for('main.tracker') }}"><i class="bx bx-bar-chart"></i><span class="links_name">Tracking</span></a>
+          <span class="tooltip">Tracking</span>
+        </li>
+        <li>
+          <a href="{{ url_for('main.manager') }}"><i class="bx bx-cog"></i><span class="links_name">Crypto Manager</span></a>
+          <span class="tooltip">Crypto Manager</span>
+        </li>
+        <li>
+          <a href="{{ url_for('crypto.analyse') }}"><i class="bx bx-line-chart"></i><span class="links_name">Analyse and Predict</span></a>
+          <span class="tooltip">Analyse and Predict</span>
+        </li>
+        <li>
+          <a href="{{ url_for('twitter.sentiment') }}"><i class="bx bxl-twitter"></i><span class="links_name">Sentiment Analysis</span></a>
+          <span class="tooltip">Twitter Sentiment Analysis</span>
+        </li>
+      </ul>
+      <ul>
+        <li id="logOut">
+          <a href="{{ url_for('auth.logout') }}" onclick="userLogout()"><i class="bx bx-log-out" id="log_out"></i><span class="links_name">Log Out</span></a>
+          <span class="tooltip">Log Out</span>
+        </li>
+      </ul>
+      <script>
+        let sidebar = document.querySelector(".sidebar");
+        let closeBtn = document.querySelector("#btn");
+        closeBtn.addEventListener("click", () => {
+          sidebar.classList.toggle("open");
+          menuBtnChange();
+        });
+
+        function menuBtnChange() {
+          if (sidebar.classList.contains("open")) {
+            closeBtn.classList.replace("bx-menu", "bx-menu-alt-right");
+          } else {
+            closeBtn.classList.replace("bx-menu-alt-right", "bx-menu");
+          }
+        }
+      </script>
+    </header>
+    <main>
+      <h2>Manage your Crypto</h2>
+      <div id="container">
+        <div id="add">
+          <h3>Crypto Bought</h3>
+          <form onsubmit="addCrypto()">
+            <div class="form">
+              <label for="name">Crypto</label>
+              <div id="select_symbol">
+                <img id="cimg" src="" style="width: 40px; height: 40px; border-radius: 50%"/>
+                <select name="name" id="name"></select>
+              </div>
+            </div>
+            <div class="form">
+              <label for="quantity">Quantity</label>
+              <input type="number" 
+                     required="true" 
+                     value="0" 
+                     min="0.0001" 
+                     step="0.0001" 
+                     name="quantity" 
+                     id="quantity"/>
+            </div>
+            <div class="form">
+              <label for="purchase_price">Price</label>
+              <input type="number" 
+                     required="true" 
+                     value="0" 
+                     min="0.01" 
+                     step="0.01" 
+                     name="purchase_price" 
+                     id="purchase_price" 
+                     readonly="true"/>
+            </div>
+            <div class="form">
+              <label for="dob">Date of Buy</label>
+              <input type="date" 
+                     required="true" 
+                     value="0" 
+                     name="dob" 
+                     id="dob" 
+                     onchange="price()"/>
+            </div>
+            <input type="submit" value="+" id="add_button"/>
+          </form>
+        </div>
+
+        <div id="sell">
+          <h3>Crypto Sold</h3>
+          <form onsubmit="addCryptoSold()">
+            <div class="form">
+              <label for="nameSell">Crypto</label>
+              <div id="select_symbol">
+                <img id="cimgSell" src="" style="width: 40px; height: 40px; border-radius: 50%"/>
+                <select name="nameSell" id="nameSell"></select>
+              </div>
+            </div>
+            <div class="form">
+              <label for="quantity">Quantity</label>
+              <input type="number" 
+                     required="true" 
+                     value="0" 
+                     min="0.0001" 
+                     step="0.0001" 
+                     name="quantityS" 
+                     id="quantityS"/>
+            </div>
+            <div class="form">
+              <label for="purchase_price">Price</label>
+              <input type="number" 
+                     required="true" 
+                     value="0" 
+                     min="0.01" 
+                     step="0.01" 
+                     name="purchase_priceS" 
+                     id="purchase_priceS" 
+                     readonly="true"/>
+            </div>
+            <div class="form">
+              <label for="dos">Date of Sell</label>
+              <input type="date" 
+                     required="true" 
+                     value="0" 
+                     name="dos" 
+                     id="dos" 
+                     onchange="priceSell()"/>
+            </div>
+            <input type="submit" value="+" id="sell_button" />
+          </form>
+        </div>
+
+        <div id="remove">
+          <h3>Remove your Crypto</h3>
+          <div id="nElementi"></div>
+          <div id="removeList"></div>
+        </div>
+      </div>
+    </main>
+    <script src="{{ url_for('static', filename='/js/manager.js') }}"></script>
+  </body>
+</html>

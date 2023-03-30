@@ -1,0 +1,427 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
+:root{
+    /*sidebar bg
+    background: #11101D;
+    background: #179dc7;
+    */
+    --primary: white;
+    --sidebar-bg:rgb(0,210,255);
+    --secondary: #181930;
+    --background-sidebar: linear-gradient(142deg, rgba(0,210,255,1) 0%, rgba(255,0,232,1) 100%);
+}
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins" , sans-serif;
+}
+
+html{
+    background: var(primary);
+}
+
+.main{
+    background: var(--primary);
+    color: var(--secondary);
+}
+
+main h2{
+    margin: 20px;
+    color: var(--secondary);
+}
+
+/* MAIN TITLE AND SUBTITLE */
+
+.main_title,.subtitle {
+    text-align: center;
+}
+
+  
+/*------ TABELLA DELL CRYPTOVALUTE ------*/
+
+#crypto_container
+{
+    width: 95%;
+    margin: 20px auto auto;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+/* ----------------- header ----------------- */
+
+#crypto_settings{
+    display: flex;
+    width: 100%;
+    padding: 5px;
+}
+
+#info{
+    margin-left: auto;
+}
+
+#crypto_settings select{
+    margin-left: 2%;
+    border-radius: 5px;
+    background-color: var(--secondary);
+    color: white;
+}
+
+/* ----------------- TOOLTIP --------------- */
+
+@media screen and (min-width: 500px) {
+    #tooltip-box{
+        justify-content: left;
+        font-size: medium;
+        border-radius: 10px;
+        margin-bottom: 10px;
+    }
+    
+    .tooltiptext{
+        margin: 5px;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    #tooltip-box{
+        justify-content: space-around;
+        font-size: 11px;
+        border-radius: 10px;
+        margin-bottom: 10px;
+    }
+    
+    .tooltiptext{
+        margin: 5px;
+    }
+}
+
+
+
+/* ----------------- FINE TOOLTIP ----------- */
+
+
+#crypto_header{
+    display: flex;
+    width: 100%;
+    justify-content: space-around;
+    text-align: left;
+    background-color: var(--secondary);
+    color: var(--primary);
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+#crypto_header :nth-child(1){
+    min-width: 5%;
+    min-height: 5%;
+    max-width: 5%;
+    max-height: 5%;
+}
+
+#crypto_header :nth-child(2){
+    min-width: 10%;
+    min-height: 10%;
+    max-width: 10%;
+    max-height: 10%;
+}
+
+#crypto_header .header_normal{
+    min-width: 17%;
+    min-height: 17%;
+    max-width: 17%;
+    max-height: 17%;
+}
+
+
+
+/* ----------------- body -----------------*/
+
+#crypto_settings :hover{
+    cursor: pointer;
+}
+
+#crypto_body{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.crypto_row{
+    font-size: small;
+    padding: 5px;
+    align-items: center;
+    display: flex;
+    width: 100%;
+    min-height: 50px;
+    justify-content: space-around;
+    border-bottom: 1px solid var(--secondary);
+}
+
+.crypto_img_box{
+    width: 90%;
+    height: 90%;
+}
+
+.crypto_img{
+    vertical-align: middle;
+    max-width: 90%;
+    max-height: 90%;
+}
+
+.crypto_symbol{
+    min-width: 10%;
+    min-height: 10%;
+    max-width: 10%;
+    max-height: 10%;
+}
+
+.crypto_cell{
+    line-height: 1em; /* a */
+    max-height: 2em; /* a x number of line to show (ex : 2 line)  */
+    text-overflow: ellipsis;
+    word-wrap: break-word;
+    min-width: 17%;
+    min-height: 17%;
+    max-width: 17%;
+    max-height: 17%;
+    text-align: left;
+}
+
+.crypto_qtty{
+    min-width: 17%;
+    min-height: 17%;
+    max-width: 17%;
+    max-height: 17%;
+    text-align: left;
+}
+
+
+/* ----------------- SCRITTE INFO RELATIVE AL WALLET ----------------- */
+
+@media screen and (max-width: 450px) {
+
+    #info_container{
+        display: flex;
+        width: 95%;
+        text-align: center;
+        align-items: center;
+        justify-content: space-evenly;
+    }
+}
+
+@media screen and (min-width: 450px) {
+
+    #info_container{
+        display: flex;
+        padding: 10px;
+        width: 95%;
+        text-align: center;
+        align-items: center;
+        justify-content: center;
+    }
+
+    
+}
+
+
+.text_info{
+    display: flex;
+    flex-direction: column;
+    row-gap: 10px;
+    font-size: small;
+}
+
+.text_info div{
+    display: flex;
+    flex-direction: column;
+    font-size: small;
+}
+
+.growth-gif{
+    width: 180px;
+    height: 200px;
+}
+
+.growth-img{
+    width: 100%;
+    height: auto;
+    vertical-align: middle;
+}
+
+
+
+
+/* ----------------------- media query --------------------------- */
+
+@media screen and (max-width: 450px) {
+
+    /*------ TABELLA DELL CRYPTOVALUTE ------*/
+
+    #crypto_container
+    {
+        width: 95%;
+        margin: 20px auto auto;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+    }
+
+    /* ----------------- header ----------------- */
+
+
+    #crypto_header{
+        display: flex;
+        width: 100%;
+        justify-content: space-around;
+        text-align: left;
+        background-color: var(--secondary);
+        color: var(--primary);
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        font-size: 12px;
+    }
+
+    #crypto_header :nth-child(1){
+        min-width: 6%;
+        min-height: 6%;
+        max-width: 6%;
+        max-height:6%;
+    }
+
+    #crypto_header :nth-child(2){
+        margin-left: 1%;
+        min-width: 12%;
+        min-height: 12%;
+        max-width: 12%;
+        max-height: 12%;
+    }
+
+    #crypto_header .header_normal{
+        min-width: 18%;
+        min-height: 18%;
+        max-width: 18%;
+        max-height: 18%;
+    }
+
+    #crypto_header :nth-child(3){
+        min-width: 10%;
+        min-height: 10%;
+        max-width: 10%;
+        max-height: 10%;
+
+    }
+
+    /* ----------------- body -----------------*/
+
+    #crypto_body{
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .crypto_row{
+        font-size: 10px;
+        padding: 5px;
+        align-items: center;
+        display: flex;
+        width: 100%;
+        min-height: 50px;
+        justify-content: space-around;
+        border-bottom: 1px solid var(--secondary);
+    }
+
+    .crypto_img_box{
+        min-width: 6%;
+        min-height: 6%;
+        max-width: 6%;
+        max-height:6%
+    }
+
+    .crypto_img{
+        vertical-align: middle;
+        max-width: 100%;
+        max-height: 100%;
+    }
+
+    .crypto_symbol{
+        font-weight: bold;
+        margin-left: 2%;
+        min-width: 12%;
+        min-height: 12%;
+        max-width: 12%;
+        max-height: 12%;
+    }
+
+    .crypto_cell{
+        padding: 2px;
+        min-width: 18%;
+        min-height: 18%;
+        max-width: 18%;
+        max-height: 18%;
+        text-align: left;
+        text-overflow: ellipsis;
+        word-wrap: break-word;
+        line-height: 1em; /* a */
+        max-height: 2em; /* a x number of line to show (ex : 2 line)  */
+    }
+
+    .crypto_qtty{
+        min-width: 10%;
+        min-height: 10%;
+        max-width: 10%;
+        max-height: 10%;
+        text-align: left;
+        line-height: 1em; /* a */
+        max-height: 2em; /* a x number of line to show (ex : 2 line)  */
+        text-overflow: ellipsis;
+        word-wrap: break-word;
+    } 
+
+  }
+
+
+  @media screen and (min-width: 1000px) {
+    /*------ TABELLA DELLE CRYPTOVALUTE ------*/
+
+    #crypto_container
+    {
+        width: 80%;
+        margin: 20px auto auto;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+    }
+
+    #crypto_header{
+        font-size: larger;
+    }
+
+    #crypto_body{
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .crypto_row{
+        font-size: 18px;
+        padding: 5px;
+        align-items: center;
+        display: flex;
+        width: 100%;
+        min-height: 50px;
+        justify-content: space-around;
+        border-bottom: 1px solid var(--secondary);
+    }
+
+    .crypto_img_box{
+        min-width: 5%;
+        min-height: 5%;
+        max-width: 5%;
+        max-height:5%;
+        padding: 5px;
+    }
+
+    .crypto_img{
+        vertical-align: middle;
+        max-width: 60%;
+        max-height: 60%;
+    }
+  }

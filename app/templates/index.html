@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"/>
+    <title>Wallet</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}"/>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/header.css') }}"/>
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet"/>
+    <script
+      src="https://code.jquery.com/jquery-3.6.0.js"
+      integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+      crossorigin="anonymous">
+    </script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/js/standalone/selectize.min.js"
+      integrity="sha256-+C0A5Ilqmu4QcSPxrlGpaZxJ04VjsRjKu+G82kl5UJk="
+      crossorigin="anonymous">
+    </script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/css/selectize.bootstrap3.min.css"
+      integrity="sha256-ze/OEYGcFbPRmvCnrSeKbRTtjG4vGLHXgOqsyLFTRjg="
+      crossorigin="anonymous"/>
+    <script 
+      src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.3/js/bootstrap.bundle.min.js" 
+      integrity="sha512-i9cEfJwUwViEPFKdC1enz4ZRGBj8YQo6QByFTF92YXHi7waCqyexvRD75S5NVTsSiTv7rKWqG9Y5eFxmRsOn0A==" 
+      crossorigin="anonymous" 
+      referrerpolicy="no-referrer">
+    </script>
+    
+  </head>
+  <body>
+    <header class="sidebar">
+      <div class="logo-details">
+        <div class="logo_name" id="username"></div>
+        <i class="bx bx-menu" id="btn"></i>
+      </div>
+      <ul class="nav-list">
+        <li>
+          <a href="{{ url_for('main.index') }}">
+            <i class="bx bx-wallet"></i>
+            <span class="links_name">Wallet</span></a>
+          <span class="tooltip">Wallet</span>
+        </li>
+        <li>
+          <a href="{{ url_for('main.tracker') }}">
+            <i class="bx bx-bar-chart"></i>
+            <span class="links_name">Tracking</span></a>
+          <span class="tooltip">Tracking</span>
+        </li>
+        <li>
+          <a href="{{ url_for('main.manager') }}">
+            <i class="bx bx-cog"></i>
+            <span class="links_name">Crypto Manager</span></a>
+          <span class="tooltip">Crypto Manager</span>
+        </li>
+        <li>
+          <a href="{{ url_for('crypto.analyse') }}">
+            <i class="bx bx-line-chart"></i>
+            <span class="links_name">Analyse and Predict</span></a>
+          <span class="tooltip">Analyse and Predict</span>
+        </li>
+        <li>
+          <a href="{{ url_for('twitter.sentiment') }}">
+            <i class="bx bxl-twitter"></i>
+            <span class="links_name">Sentiment Analysis</span>
+          </a>
+          <span class="tooltip">Twitter Sentiment Analysis</span>
+        </li>
+      </ul>
+      <ul>
+        <li id="logOut">
+          <a href="{{ url_for('auth.logout') }}" onclick="" userLogOut()>
+            <i class="bx bx-log-out" id="log_out"></i>
+            <span class="links_name">Log Out</span></a>
+          <span class="tooltip">Log Out</span>
+        </li>
+      </ul>
+      <script>
+        localStorage.setItem("name", "{{ name }}");
+        let sidebar = document.querySelector(".sidebar");
+        let closeBtn = document.querySelector("#btn");
+        closeBtn.addEventListener("click", () => {
+          sidebar.classList.toggle("open");
+          menuBtnChange();
+        });
+
+        function menuBtnChange() {
+          if (sidebar.classList.contains("open")) {
+            closeBtn.classList.replace("bx-menu", "bx-menu-alt-right");
+          } else {
+            closeBtn.classList.replace("bx-menu-alt-right", "bx-menu");
+          }
+        }
+      </script>
+    </header>
+    <main class="main">
+      <h2 class="main_title">Wallet</h2>
+      <h3 class="subtitle">Keep track of your investments</h3>
+      <div id="info_container">
+        <div class="growth-gif">
+          <image
+            class="growth-img"
+            src="{{ url_for('static', filename='media/growth-analysis.gif') }}"
+          ></image>
+        </div>
+        <div class="text_info">
+          <div id="total_buy"></div>
+          <div id="total_wallet"></div>
+          <div id="total_earn"></div>
+        </div>
+      </div>
+
+      <div id="crypto_container">
+        <div id="crypto_settings">
+          <i id="filter" class="bx bx-filter-alt bx-sm"></i>
+          <select id="select_field" style="display: none">
+            <option value="sort">Sort By</option>
+            <option value="dob">Date</option>
+            <option value="quantity">Quantity</option>
+            <option value="rateo">Gain/Loss</option>
+          </select>
+          <select id="select_crypto" style="display: none"></select>
+          <i id="info" class="bx bx-info-circle bx-sm" onclick="display_tooltip()"></i>
+        </div>
+        <div id="tooltip-box" style="display: none">
+          <div id="tooltiptext1" class="tooltiptext" style="display: none">
+            <b>Qnt</b> = Quantity
+          </div>
+          <div id="tooltiptext3" class="tooltiptext" style="display: none">
+            <b>OP</b> = Original Price
+          </div>
+          <div id="tooltiptext2" class="tooltiptext" style="display: none">
+            <b>AP</b> = Actual Price
+          </div>
+          <div id="tooltiptext4" class="tooltiptext" style="display: none">
+            <b>GL</b> = Gain/Loss
+          </div>
+          <div id="tooltiptext5" class="tooltiptext" style="display: none">
+            <b>- sign</b> = Crypto Sold
+          </div>
+        </div>
+        <div id="crypto_header">
+          <div class="header_logo"></div>
+          <div class="header_symbol"></div>
+          <div class="header_normal">Qnt</div>
+          <div class="header_normal">OP</div>
+          <div class="header_normal">AP</div>
+          <div class="header_normal">G/L</div>
+          <div class="header_normal">Date</div>
+        </div>
+        <div id="crypto_body"></div>
+      </div>
+    </main>
+    <script src="{{ url_for('static', filename='js/walletPage.js') }}"></script>
+  </body>
+</html>

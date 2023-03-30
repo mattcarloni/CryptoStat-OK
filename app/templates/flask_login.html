@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>{{ title }}</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/login.css') }}"
+    />
+  </head>
+  <body>
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <title>Slide Navbar</title>
+        <link
+          href="https://fonts.googleapis.com/css2?family=Jost:wght@500&display=swap"
+          rel="stylesheet"/>
+        <script 
+          src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.3/js/bootstrap.bundle.min.js" 
+          integrity="sha512-i9cEfJwUwViEPFKdC1enz4ZRGBj8YQo6QByFTF92YXHi7waCqyexvRD75S5NVTsSiTv7rKWqG9Y5eFxmRsOn0A==" 
+          crossorigin="anonymous" 
+          referrerpolicy="no-referrer">
+        </script>
+      </head>
+      <body>
+        <!-- <div class="row"> -->
+        <!-- Alerts -->
+        {% block alert_content %} {% with messages =
+        get_flashed_messages(with_categories=true) %} {% if messages %}
+
+        <!-- Position it: -->
+        <!-- - `.toast-container` for spacing between toasts -->
+        <!-- - `.position-absolute`, `top-0` & `end-0` to position the toasts in the upper right corner -->
+        <!-- - `.p-3` to prevent the toasts from sticking to the edge of the container  -->
+        <div class="toast-container position-absolute top-0 end-0 p-3">
+          {% for category, message in messages %}
+          <div
+            class="toast align-items-center text-white {% if category == 'message' %} bg-info {% else %} bg-{{ category }} {% endif %} border-0"
+            role="alert"
+            aria-live="assertive"
+            aria-atomic="true"
+          >
+            <div class="d-flex">
+              <div class="toast-body">{{ message }}</div>
+              <button
+                type="button"
+                class="btn-close me-2 m-auto"
+                data-bs-dismiss="toast"
+                aria-label="Close"
+              ></button>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+
+        {% endif %} {% endwith %} {% endblock %}
+        <!-- </div> -->
+        <div class="main">
+          <input type="checkbox" id="chk" aria-hidden="true" />
+
+          <div class="signup">
+            <form method="post" action="/register">
+              <label for="chk" aria-hidden="true">Sign up</label>
+              <input
+                type="text"
+                name="name"
+                placeholder="First & Last name"
+                required="true"
+              />
+              <input
+                type="email"
+                name="email"
+                placeholder="Email"
+                required="true"
+              />
+              <input
+                type="password"
+                name="password"
+                placeholder="Password"
+                required="true"
+                id="password"
+                style="margin-bottom: 5px"
+              />
+              <div class="errors">
+                <small id="number" hidden class="form-text my-3"
+                  >Password must contain at least 1 number.</small>
+                <small id="too_short" hidden class="form-text my-3"
+                  >Password must be 8-32 characters long.</small>
+                <small id="special" hidden class="form-text"
+                  >Password must contain at least 1 special character.</small>
+              </div>
+
+              <button class="button" type="submit" id="sign-up-btn">
+                Sign up
+              </button>
+            </form>
+          </div>
+
+          <div class="login">
+            <form method="post" action="/login">
+              <label id="login-page" for="chk" aria-hidden="true">Login</label>
+              <input
+                type="email"
+                name="email"
+                placeholder="Email"
+                required="true"
+              />
+              <input
+                type="password"
+                name="password"
+                placeholder="Password"
+                required="true"
+              />
+              <button type="submit" class="button">Login</button>
+            </form>
+          </div>
+        </div>
+      </body>
+    </html>
+    {% if not register %}
+    <script>
+      const loginLabel = document.getElementById("login-page");
+      loginLabel.click();
+    </script>
+    {% endif %}
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+  </body>
+</html>
