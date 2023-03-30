@@ -18,3 +18,5 @@ keras
 tensorflow
 cryptocmd
 yfinance
+textblob
+tweepy
