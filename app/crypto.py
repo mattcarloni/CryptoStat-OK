@@ -167,8 +167,7 @@ def get_plot():
         # Creating dataframe to display output on website and saving output in csv
         gv = pd.DataFrame(gv)
         gv['Forecast'] = dv
-        gv = gv.rename(columns={gv.columns[0]: 'Days', 'Forecast': ''})
-        gv.set_index('Days', inplace=True)
+        gv = gv.rename(columns={gv.columns[0]: 'Days'})
         gv.to_csv('app/forecast.csv')
             
     return render_template('analyse.html', get_plot = True, plot_url = 'static/media/my_plot.png', plot_url1 = 'static/media/predict.png', data = data,tables=[gv.to_html(classes='data')], titles=gv.columns.values)
