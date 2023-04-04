@@ -80,10 +80,9 @@ def get_plot():
         model.add((LSTM(16)))
         model.add((Dense(5))) #Hidden layers
         model.add((Dense(1))) #Output layer
-        # Compile the model with RSME error (Root Mean Squared Error) one of the two main performance 
-        # indicators for a regression model. It measures the average difference between values predicted 
-        # by a model and the actual values. It provides an estimation of how well the model is able to
-        # predict the target value (accuracy).
+        # Compile the model with RSME error (Root Mean Squared Error)
+        # It measures the average difference between values predicted by a model and the actual values. 
+        # It provides an estimation of how well the model is able to predict the target value (accuracy).
 
         # Aadam as optimizer. When training a deep learning model, you must adapt every epoch's weight and 
         # minimize the loss function. An optimizer is an algorithm or function that adapts the neural network's 
@@ -113,10 +112,10 @@ def get_plot():
         ax.grid()
         ax.legend(('Predicted Trend','Actual Trend'))
         plt.savefig('app/static/media/predict.png')
-        # Here we are creating code for our future 15 days prediction. Ao for that we are taking 
+        # Here we are creating code for our future 15 days prediction. And for that we are taking 
         # recent 21 values and then starting prediction of next value 
         # Then again appending this next value in current data and using this value and past 19 we are 
-        # predicting next vaule and so on 
+        # predicting next value and so on 
         i=0
         global lst_output
         lst_output=[]
@@ -144,7 +143,7 @@ def get_plot():
                 i=i+1
             
         global b
-        # Plotting next predixtion graph
+        # Plotting next prediction graph
         data=data[500:]
         b = list(data)+list(lst_output)
         img = io.BytesIO()
@@ -171,7 +170,11 @@ def get_plot():
         #gv.set_index('Days', inplace=True)
         gv.to_csv('app/forecast.csv')
             
-    return render_template('analyse.html', get_plot = True, plot_url = 'static/media/my_plot.png', plot_url1 = 'static/media/predict.png', data = data,tables=[gv.to_html(classes='data')], titles=gv.columns.values)
+    return render_template('analyse.html', get_plot = True, 
+                                           plot_url = 'static/media/my_plot.png', 
+                                           plot_url1 = 'static/media/predict.png', 
+                                           data = data,tables=[gv.to_html(classes='data')], 
+                                           titles=gv.columns.values)
 
 from flask import Flask,render_template,send_file
 # Download the data 
