@@ -183,7 +183,6 @@ def download_file():
     path = "forecast.csv"
     return send_file(path,as_attachment=True)
 
-from numpy import array
 def split_sequence(sequence, n_steps):
 	X, y = list(), list()
 	for i in range(len(sequence)):
